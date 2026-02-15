@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Challenge</title>
+
+  <script src="timer.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <h2> QR Challenge</h2>
+  <div id="timer"></div>
+
+  <p>
+    Scan QR di booth menggunakan HP kamu.<br>
+    Selesaikan teka-tekinya, lalu masukkan jawabannya di bawah.
+  </p>
+
+  <input
+    id="flagInput"
+    placeholder="Contoh: 1-2-3"
+    style="padding:10px; width:320px;"
+  >
+  <br><br>
+
+  <button
+    id="submitBtn"
+    onclick="submitFlag('8-9-13-1-20-9-11-1')"
+  >
+    Submit
+  </button>
+
+  <script>
+    let solved = false;
+
+    function submitFlag(correctAnswer) {
+      if (solved) return;
+
+      const inputEl = document.getElementById("flagInput");
+      const buttonEl = document.getElementById("submitBtn");
+      const input = inputEl.value.trim();
+
+      if (input === correctAnswer) {
+        solved = true;
+
+        stopTimer();
+
+        confetti({
+          particleCount: 180,
+          spread: 90,
+          origin: { y: 0.6 }
+        });
+
+        const audio = new Audio("sfx/success.mp3");
+        audio.play().catch(() => {});
+
+        inputEl.readOnly = true;
+        buttonEl.disabled = true;
+        buttonEl.innerText = "✅ Completed";
+
+        alert("🎉 Jawaban benar! QR Challenge selesai 🎉");
+      } else {
+        alert("❌ Jawaban salah, coba lagi");
+      }
+    }
+  </script>
+
+</body>
+</html>
